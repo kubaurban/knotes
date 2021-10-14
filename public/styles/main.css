@@ -17,9 +17,11 @@ a {
 
 nav { overflow: hidden; }
 
-nav a {
+nav a, nav p {
     float: left;
     padding: 12px 12px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 nav a:hover {
@@ -91,6 +93,8 @@ button a { color: var(--text); }
 	color: var(--light_text);
 	background-color: var(--dark_background);
 }
+
+#unavailable { color: var(--light_text); }
 
 #functionality {
     float: left;

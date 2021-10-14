@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('../partials/head.ejs') %>
+
+<head>
+    <%- include('../partials/head.ejs') %>
+</head>
+
 <body>
     <%- include('../partials/nav.ejs') %>
     <div class="outer" id="content_wrap">
@@ -15,11 +19,12 @@
                 </form>
                 <% if (exists) { %>
                     <h2>Notatka o podanej nazwie już istnieje!</h2>
-                <% } %>
-                <br>
+                    <% } %>
+                        <br>
             </div>
         </section>
     </div>
     <%- include('../partials/footer.ejs') %>
 </body>
+
 </html>

@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include("../partials/head.ejs") %>
+
+<head>
+    <%- include("../partials/head.ejs") %>
+    <script>
+        function note_update() {
+            const filename = document.getElementById('name-label').dataset.title
+            const content = document.getElementById('content').innerText
+            console.log("update")
+            fetch(`update`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'filename': filename, 'content': content })
+            })
+                .then(res => res.json())
+                .then(data => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+        }
+
+        function note_delete() {
+            console.log("delete")
+            var url = window.location.href
+            url = url.substring(url.lastIndexOf('/') + 1)
+            fetch(url, { method: 'DELETE' })
+                .then(res => res.json())
+                .then(data => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+        }
+    </script>
+</head>
+
 <body>
     <%- include("../partials/nav.ejs") %>
     <div class="outer" id="content_wrap">
         <section class="inner">
-            <form class="create-note" action="/notes/update" method="POST">
-                <label id="name-label" for="title" data-title="<%= name %>">Tytuł: </label><b><%= name %></b> <br>
+            <form class="create-note">
+                <label id="name-label" for="title" data-title="<%= name %>">Tytuł: </label><b>
+                    <%= name %>
+                </b> <br>
                 <textarea name="content" id="content" cols="30" rows="10"><%= body %></textarea>
                 <input type="text" value="<%=name%>" id="oldUrl" name="oldUrl" hidden>
-                </form>
+            </form>
             <br>
-            <button class="update" id="<%= name %>">Zapisz</button>
-            <button class="delete" id="<%= name %>">Usuń</button>
+            <button onclick="note_update()">Zapisz</button>
+            <button onclick="note_delete()">Usuń</button>
             <br>
         </section>
     </div>
     <%- include("../partials/footer.ejs") %>
-    <script>
-        const trash = document.querySelector('button.delete');
-
-        trash.addEventListener('click', () => {
-            fetch(`${trash.id}`, { method: 'DELETE' })
-            .then(res => res.json())
-            .then(data => window.location.href = data.redirect)
-            .catch(err => console.log(err));
-        });
-
-        // const update = document.querySelector('button.update');
-
-        // update.addEventListener('click', () => {
-        //     const textarea = document.getElementById('content')
-        //     const content = textarea.innerText
-        //     const filename = document.getElementById('name-label').dataset.title
-        //     fetch(`update`, { method: 'POST', body: JSON.stringify({ filename, content }) })
-        //     .then(res => res.json())
-        //     .then(data => window.location.href = data.redirect)
-        //     .catch(err => console.log(err));
-        // })
-    </script>
 </body>
+
 </html>

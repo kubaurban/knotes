@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
-<%- include('./partials/head') %>
+
+<head>
+    <%- include('./partials/head') %>
+</head>
+
 <body>
     <%- include('./partials/nav') %>
     <div class="outer" id="content_wrap">
@@ -11,18 +15,19 @@
             </p>
             <div id="functionality">
                 <p>Twórz</p>
-                <img src='../resources/new.svg'>
+                <img src='/static/resources/new.svg'>
             </div>
             <div id="functionality">
                 <p>Edytuj</p>
-                <img src='../resources/edit.svg'>
+                <img src='/static/resources/edit.svg'>
             </div>
             <div id="functionality">
                 <p>Zapisuj</p>
-                <img src='../resources/save.svg'>
+                <img src='/static/resources/save.svg'>
             </div>
         </section>
     </div>
     <%- include('./partials/footer') %>
 </body>
+
 </html>

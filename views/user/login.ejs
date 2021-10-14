@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head.ejs") %>
+</head>
+
+<body>
+    <%- include('../partials/nav.ejs') %>
+    <div class="outer" id="content_wrap">
+        <section class="inner">
+            <%= message %><br>
+            <form name="register_form" method="POST" action="/user/login">
+                <br><input type="text" id="text" placeholder="login" name="login"><br><br>
+                <input type="password" id="password" placeholder="password" name="password"><br><br>
+                <button type="submit" value="Submit" name="submit">Submit</button>
+            </form>
+        </section>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>

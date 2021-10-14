@@ -3,5 +3,14 @@
         <a href="/">Strona główna</a>
         <a href="/notes">Wszystkie notatki</a>
         <a href="/notes/create">Nowa notatka</a>
+        <% if (loged_in) { %>
+            <p id="unavailable">Zaloguj</p>
+            <p id="unavailable">Zarejestruj</p>
+            <a href="/user/logout">Wyloguj</a>
+        <% } else { %>
+            <a href="/user/login">Zaloguj</a>
+            <a href="/user/register">Zarejestruj</a>
+            <p id="unavailable">Wyloguj</p>
+        <% } %>
     </nav>
 </div>

@@ -5,17 +5,27 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index",
+    "start": "node app.js",
     "dev": "nodemon app.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "morgan": "^1.10.0"
+    "express-session": "^1.17.2",
+    "js-sha256": "^0.9.0",
+    "mongoose": "^6.0.7",
+    "morgan": "^1.10.0",
+    "session-file-store": "^1.5.0",
+    "supervisor": "^0.12.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.12"
+  },
+  "nodemonConfig": {
+    "ignore": ["sessions/*"]
   },
   "repository": {
     "type": "git",
