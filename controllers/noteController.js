@@ -9,6 +9,7 @@ const note_get = (req, res) => {
         res.render('user/login', {title: 'Log in', loged_in: false, message: 'Log in before you access the notes'});
     } else {
         var reads = req.session.readperm.split(':');
+        console.log(reads);
         if (reads.length === 0) {
             res.render('notes/index', {title: 'Wszystkie notatki', loged_in: true, notes: []});
         } else if (reads.length > 0 && reads[0] === '') {
@@ -20,7 +21,11 @@ const note_get = (req, res) => {
                 var almost_notes = []
                 for (const note of reads) {
                     const mongo_note = await Note.findById(note);
-                    almost_notes.push({"id": mongo_note.id, "title": mongo_note.title.replace(PATH_PREFIX, '')});
+                    if(mongo_note !== null) {
+                        almost_notes.push({"id": mongo_note.id, "title": mongo_note.title.replace(PATH_PREFIX, '')});
+                    }else{
+                        console.log("Wyszlismy w dupe");
+                    }
                 }
                 resolve(almost_notes)
             }).then(val => {
@@ -58,10 +63,11 @@ const note_create_post = (req, res) => {
         res.render('user/login', {title: 'Log in', loged_in: false, message: 'Log in before you access the notes'});
     }
     else {
-        const path = PATH_PREFIX + req.body.title + PATH_SUFFIX;
+        const title = req.body.title;
+        const path = PATH_PREFIX + title + PATH_SUFFIX;
 
         const note = new Note({
-            "title": path, "content": req.body.text
+            "title": title, "content": req.body.text
         })
         note.save()
             .then(() => console.log("success"))
@@ -78,8 +84,9 @@ const note_create_post = (req, res) => {
             req.session.readperm = readperm
             req.session.writeperm = writeperm
             req.session.save(function(err) {
-                res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true})
+                console.log(err);
             })
+            res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true})
         })
     }
 };
@@ -90,8 +97,22 @@ const note_delete = (req, res) => {
             console.log(error);
             res.redirect('/500');
         } else {
+            const readperm = req.session.readperm.replace(req.params.filename+":", "");
+            const writeperm = req.session.writeperm.replace(req.params.filename+":", "");
+            const prom = new Promise(async (resolve, reject) => {
+                await User.updateOne({ "login": req.session.user }, {
+                    "readperm": readperm, "writeperm": writeperm
+                });
+                resolve()
+            }).then(() => {
+                req.session.readperm = readperm
+                req.session.writeperm = writeperm
+                req.session.save(function(err) {
+                    console.log(err);
+                })
+                res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true})
+            })
             console.log("deleted one record");
-            res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true});
         }
     })
 };
