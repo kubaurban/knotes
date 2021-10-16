@@ -3,37 +3,7 @@
 
 <head>
     <%- include("../partials/head.ejs") %>
-    <script>
-        function note_update() {
-
-            //const filename = document.getElementById('name-label').dataset.title
-            //const content = document.getElementById('content').innerText
-            
-            console.log("update")
-            var url = window.location.href
-            url = url.substring(url.lastIndexOf('/') + 1)
-
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'id': url, 'filename': document.getElementById('name-label').dataset.title, 
-                    'content':  document.getElementById('content').innerText})
-            })
-                .then(res => res.json())
-                .then(data => window.location.href = data.redirect)
-                .catch(err => console.log(err));
-        }
-
-        function note_delete() {
-            console.log("delete")
-            var url = window.location.href
-            url = url.substring(url.lastIndexOf('/') + 1)
-            fetch(url, { method: 'DELETE' })
-                .then(res => res.json())
-                .then(data => window.location.href = data.redirect)
-                .catch(err => console.log(err));
-        }
-    </script>
+    <script src="/static/scripts/note_manip.js"></script>
 </head>
 
 <body>
@@ -45,7 +15,7 @@
                     <%= name %>
                 </b> <br>
                 <textarea name="content" id="content" cols="30" rows="10"><%= body %></textarea>
-                <input type="text" value="<%=name%>" id="oldUrl" name="oldUrl" hidden>
+                <!-- <input type="text" value="<%=name%>" id="oldUrl" name="oldUrl" hidden> -->
             </form>
             <br>
             <button onclick="note_update()">Zapisz</button>

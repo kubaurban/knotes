@@ -31,6 +31,7 @@ app.use(
 })
 
 // use note routes
+console.log('app.js use /notes')
 app.use('/notes', require('./routes/noteRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 

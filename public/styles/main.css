@@ -87,8 +87,8 @@ button a { color: var(--text); }
 #content_wrap { background-color: var(--background); }
 
 #footer_wrap {
-    position: absolute;
-    bottom: 0;
+    /* position: absolute;
+    bottom: 0; */
 	font-size: 0.8em;
 	color: var(--light_text);
 	background-color: var(--dark_background);
@@ -110,8 +110,8 @@ ul li {
     border: 1px solid #FFFFFF;
     margin: 10px;
     padding: 10px 20px;
-    display: flex;
-    align-items: center;
+    /* display: flex;
+    align-items: center; */
 }
 
 ul li img {
