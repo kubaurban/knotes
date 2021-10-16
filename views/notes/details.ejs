@@ -5,13 +5,19 @@
     <%- include("../partials/head.ejs") %>
     <script>
         function note_update() {
-            const filename = document.getElementById('name-label').dataset.title
-            const content = document.getElementById('content').innerText
+
+            //const filename = document.getElementById('name-label').dataset.title
+            //const content = document.getElementById('content').innerText
+            
             console.log("update")
-            fetch(`update`, {
+            var url = window.location.href
+            url = url.substring(url.lastIndexOf('/') + 1)
+
+            fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'filename': filename, 'content': content })
+                body: JSON.stringify({ 'id': url, 'filename': document.getElementById('name-label').dataset.title, 
+                    'content':  document.getElementById('content').innerText})
             })
                 .then(res => res.json())
                 .then(data => window.location.href = data.redirect)

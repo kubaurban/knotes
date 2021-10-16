@@ -11,6 +11,6 @@ router.post('/', noteController.note_create_post);
 router.get('/create', noteController.note_create_get);
 router.get('/:filename', noteController.note_details);
 router.delete('/:filename', noteController.note_delete);
-router.post('/update', noteController.note_update);
+router.post('/:filename', noteController.note_update);
 
 module.exports = router;

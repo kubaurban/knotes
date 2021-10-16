@@ -24,7 +24,7 @@ const note_get = (req, res) => {
                     if(mongo_note !== null) {
                         almost_notes.push({"id": mongo_note.id, "title": mongo_note.title.replace(PATH_PREFIX, '')});
                     }else{
-                        console.log("Wyszlismy w dupe");
+                        console.log("Weszlismy w dupe");
                     }
                 }
                 resolve(almost_notes)
@@ -84,9 +84,11 @@ const note_create_post = (req, res) => {
             req.session.readperm = readperm
             req.session.writeperm = writeperm
             req.session.save(function(err) {
-                console.log(err);
+                if(err) console.log(err);
             })
-            res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true})
+            console.log("PrzedC");
+            res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true});
+            console.log("PoC");
         })
     }
 };
@@ -97,6 +99,8 @@ const note_delete = (req, res) => {
             console.log(error);
             res.redirect('/500');
         } else {
+            console.log("deleted one record");
+
             const readperm = req.session.readperm.replace(req.params.filename+":", "");
             const writeperm = req.session.writeperm.replace(req.params.filename+":", "");
             const prom = new Promise(async (resolve, reject) => {
@@ -104,30 +108,34 @@ const note_delete = (req, res) => {
                     "readperm": readperm, "writeperm": writeperm
                 });
                 resolve()
-            }).then(() => {
+            }).then(async () => {
                 req.session.readperm = readperm
                 req.session.writeperm = writeperm
-                req.session.save(function(err) {
-                    console.log(err);
+                await req.session.save(function(err) {
+                    if(err) console.log(err);
                 })
-                res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true})
+                console.log("Przed");
+                res.json({redirect: '/notes', loged_in: true});
+                //res.redirect('/', {status: 202}, {title: 'Notes', loged_in: true});
+                console.log("Po");
             })
-            console.log("deleted one record");
+            console.log("PoPo");
         }
     })
 };
 
 const note_update = (req, res) => {
-    Note.findByIdAndUpdate(req.body.title, function (error, result) {
-        if (error) {
-            console.log(error);
-            res.redirect('/500');
-        } else {
-            console.log(req)
-            result = {title: req.body.filename, content: req.body.content}
-            res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true})
-        }
-    })
+    Note.replaceOne({"_id": "616a1450095557290f97fefb"}, {"content": "DUPA"})
+    // Note.findByIdAndUpdate(req.body.id, function (error, result) {
+    //     if (error) {
+    //         console.log(error);
+    //         res.redirect('/500');
+    //     } else {
+    //         console.log(req)
+    //         result = {title: req.body.title, content: req.body.content}
+    //         res.json({redirect: '/notes', loged_in: true});
+    //     }
+    // })
 };
 
 module.exports = {
