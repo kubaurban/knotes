@@ -47,10 +47,22 @@ body {
 #note-container {
     display: flex;
     align-items: flex-start;
+    text-align: center;
+}
+
+#note-container > p {
+    margin: 0 auto;
 }
 
 #note-container > div {
     display: flex;
     flex-direction: column;
     width: 50%;
+}
+
+@media (max-width: 666px) {
+    #note-container {
+        flex-direction: column;
+        align-items: center;
+    }
 }
