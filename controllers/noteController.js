@@ -1,8 +1,11 @@
+const { mongo } = require('mongoose');
 const Note = require('../models/note');
 const User = require('../models/user');
 
 const PATH_PREFIX = './public/notes/'
 const PATH_SUFFIX = '.txt'
+
+const previewLength = 300;
 
 const note_get = (req, res) => {
     if (req.session.user === undefined) {
@@ -22,7 +25,15 @@ const note_get = (req, res) => {
                 for (const note of reads) {
                     const mongo_note = await Note.findById(note);
                     if (mongo_note !== null) {
-                        almost_notes.push({ "id": mongo_note.id, "title": mongo_note.title.replace(PATH_PREFIX, '') });
+
+                        let content = mongo_note.content;
+                        if(content.length > previewLength) content = content.substring(0, previewLength) + '...';
+
+                        almost_notes.push({
+                            "id": mongo_note.id,
+                            "title": mongo_note.title.replace(PATH_PREFIX, ''),
+                            "content": content
+                        });
                     } else {
                         console.log("Weszlismy w dupe");
                     }

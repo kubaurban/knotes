@@ -5,12 +5,25 @@
 }
 
 .note-li {
+    border: 1px solid #FFFFFF;
+    margin: 10px;
+    padding: 10px 20px;
+}
 
+.note-img {
+    width: 64px;
 }
 
 .note-top {
     display: flex;
     align-items: center;
+}
+
+.note-bottom {
+    text-align: justify;
+    margin-top: 5px;
+    border-top: 2px solid #666;
+    padding-top: 5px;
 }
 
 #content {
@@ -29,4 +42,15 @@ body {
 #content_wrap {
     flex-grow: 1;
     padding-bottom: 30px;
+}
+
+#note-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+#note-container > div {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
 }

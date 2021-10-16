@@ -2,11 +2,12 @@
 
 <head>
     <%- include("../partials/head.ejs") %>
+    <link rel="stylesheet" href="/static/styles/register.css">
     <script>
         function ValidatePasswords() {
             password1 = window.document.forms.register_form.password.value;
             password2 = window.document.forms.register_form.password_repeated.value;
-            if (password1 === password2) {
+            if (password1 === password2 || password2 === '') {
                 console.log('true')
                 window.document.forms.register_form.submit.type = 'submit';
                 window.document.getElementById('password_info').style = "opacity: 0.0;"
@@ -26,7 +27,8 @@
             <%= message %><br>
             <form action="/user/register" method="POST" name="register_form">
                 <br><input type="text" placeholder="login" name="login"><br><br>
-                <input type="password" , placeholder="password" name="password"><br>
+                <input type="password" , placeholder="password" name="password"
+                oninput="ValidatePasswords()"><br><br>
                 <input type="password" , placeholder="repeat password" name="password_repeated"
                     oninput="ValidatePasswords()"><br>
                 <div id="password_info" style="opacity: 0.0;">Passwords do not match</div><br><br>
