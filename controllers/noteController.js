@@ -8,7 +8,6 @@ const PATH_SUFFIX = '.txt'
 const previewLength = 300;
 
 const note_get = (req, res) => {
-    console.log('note_get', req.body.query);
     if (req.session.user === undefined) {
         res.render('user/login', { title: 'Log in', loged_in: false, message: 'Log in before you access the notes' });
     } else {
@@ -32,11 +31,11 @@ const note_get = (req, res) => {
 
                         almost_notes.push({
                             "id": mongo_note.id,
-                            "title": mongo_note.title.replace(PATH_PREFIX, ''),
+                            "title": mongo_note.title,
                             "content": content
                         });
                     } else {
-                        console.log("Weszlismy w dupe");
+                        console.log("Error - user's read/write permissions are linked to not existing notes");
                     }
                 }
                 resolve(almost_notes)
@@ -77,12 +76,9 @@ const note_create_post = (req, res) => {
     }
     else {
         const title = req.body.title;
-        const path = PATH_PREFIX + title + PATH_SUFFIX;
 
         // wyszukac note o tej samej nazwie
         Note.findOne({ "title": title }, (err, note) => {
-            console.log('notatka o tej samej nazwie:', note);
-
             if (note) {
                 res.render('notes/create', {
                     title: 'Stwórz notatkę',
@@ -96,6 +92,7 @@ const note_create_post = (req, res) => {
                 note.save()
                     .then(() => console.log("success"))
                     .catch((error) => console.log(error));
+
                 // update user's session
                 const readperm = req.session.readperm + note._id + ":";
                 const writeperm = req.session.writeperm + note._id + ":";
@@ -108,10 +105,8 @@ const note_create_post = (req, res) => {
                     req.session.readperm = readperm
                     req.session.writeperm = writeperm
                     req.session.save(function (err) {
-                        if (err) console.log('ASDASDASDA', err);
-                        console.log("PrzedC");
+                        if (err) console.log(err);
                         res.redirect('/notes', { status: 202 }, { title: 'Notes', loged_in: true });
-                        console.log("PoC");
                     })
                 })
             }
@@ -140,28 +135,21 @@ const note_delete = (req, res) => {
                 await req.session.save(function (err) {
                     if (err) console.log(err);
                 })
-                console.log("Przed");
                 res.json({ redirect: '/notes', loged_in: true });
-                //res.redirect('/', {status: 202}, {title: 'Notes', loged_in: true});
-                console.log("Po");
+                //res.redirect('/', {status: 202}, {title: 'Notes', loged_in: true}); // to nie dziala
             })
-            console.log("PoPo");
         }
     })
 };
 
 const note_update = (req, res) => {
     console.log('node_update', req.body, ' <- req')
-    // Note.replaceOne({"_id": "616a1450095557290f97fefb"}, {"content": "DUPA"})
+
     Note.findByIdAndUpdate(req.body.id, req.body, (error, result) => {
-        console.log('findbyidandupdate callback')
         if (error) {
             console.log(error);
             res.redirect('/500');
         } else {
-            // console.log(req)
-            console.log('findbyidandupdate callback else')
-            // result = {title: req.body.title, content: req.body.content}
             res.json({ redirect: '/notes', loged_in: true });
             // res.redirect('/notes', {status: 202}, {title: 'Notes', loged_in: true});
         }

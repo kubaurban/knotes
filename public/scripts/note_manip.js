@@ -1,13 +1,8 @@
 function note_update() {
+    console.log("note_update")
 
-    //const filename = document.getElementById('name-label').dataset.title
-    //const content = document.getElementById('content').innerText
-    
-    console.log("update")
     var url = window.location.href
-    alert(url)
     url = url.substring(url.lastIndexOf('/') + 1)
-    alert(url)
 
     fetch(url, {
         method: 'POST',
@@ -38,8 +33,5 @@ function note_search(query) {
     fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
-    })
-        // .then(res => res.json())
-        // .then(data => window.location.href = data.redirect)
-        .catch(err => console.log(err));
+    }).catch(err => console.log(err));
 }
