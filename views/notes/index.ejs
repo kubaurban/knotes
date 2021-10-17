@@ -5,6 +5,8 @@
     <%- include('../partials/head.ejs') %>
         <script defer>
             document.addEventListener('DOMContentLoaded', e => {
+
+                // "usuń"
                 console.log('script', document.querySelectorAll('.note-del'))
                 document.querySelectorAll('.note-del').forEach(element => {
                     console.log('addeventlistener', element, element.dataset.noteId)
@@ -13,6 +15,17 @@
                         note_delete_request(element.dataset.noteId);
                     });
                 });
+
+                // search
+                // const searchbox = document.querySelector('#search');
+                // searchbox.addEventListener('submit', event => {
+                //     if (event.key === 'Enter') {
+                //         // szukanie
+                //         const query = searchbox.value;
+                //         note_search(query);
+                //     }
+                // })
+
             });
         </script>
         <script src="/static/scripts/note_manip.js"></script>
@@ -23,62 +36,64 @@
         <div class="outer" id="content_wrap">
             <section class="inner">
                 <h1>Notatki</h1>
+                <form action="/notes/search" method="POST">
+                    <input type="search" name="query" id="search">
+                </form>
                 <div id="note-container">
 
 
 
                     <% if(notes.length> 0) { %>
 
-                        <%
-                            const notesOdd = notes.filter((element, index, array) => index % 2 === 1);
+                        <% const notesOdd=notes.filter((element, index, array)=> index % 2 === 1);
                             const notesEven = notes.filter((element, index, array) => index % 2 === 0);
-                        %>
+                            %>
 
-                        <div id="notes-even">
-                            <% notesEven.forEach(note=> { %>
+                            <div id="notes-even">
+                                <% notesEven.forEach(note=> { %>
 
-                                <div class="note-li">
-                                    <div class="note-top">
-                                        <a class="note-link" href="/notes/<%= note.id %>">
-                                            <img src="/static/resources/new.svg" class="note-img">
-                                            <%= note.title %>
-                                        </a>
-                                        <button class="note-del" data-note-id="<%= note.id %>">Usuń</button>
+                                    <div class="note-li">
+                                        <div class="note-top">
+                                            <a class="note-link" href="/notes/<%= note.id %>">
+                                                <img src="/static/resources/new.svg" class="note-img">
+                                                <%= note.title %>
+                                            </a>
+                                            <button class="note-del" data-note-id="<%= note.id %>">Usuń</button>
+                                        </div>
+                                        <div class="note-bottom">
+                                            <%= note.content %>
+                                        </div>
                                     </div>
-                                    <div class="note-bottom">
-                                        <%= note.content %>
+
+
+                                    <% }) %>
+                            </div>
+
+                            <div id="notes-odd">
+                                <% notesOdd.forEach(note=> { %>
+
+                                    <div class="note-li">
+                                        <div class="note-top">
+                                            <a class="note-link" href="/notes/<%= note.id %>">
+                                                <img src="/static/resources/new.svg" class="note-img">
+                                                <%= note.title %>
+                                            </a>
+                                            <button class="note-del" data-note-id="<%= note.id %>">Usuń</button>
+                                        </div>
+                                        <div class="note-bottom">
+                                            <%= note.content %>
+                                        </div>
                                     </div>
-                                </div>
-    
-    
-                                <% }) %>
-                        </div>
 
-                        <div id="notes-odd">
-                            <% notesOdd.forEach(note=> { %>
 
-                                <div class="note-li">
-                                    <div class="note-top">
-                                        <a class="note-link" href="/notes/<%= note.id %>">
-                                            <img src="/static/resources/new.svg" class="note-img">
-                                            <%= note.title %>
-                                        </a>
-                                        <button class="note-del" data-note-id="<%= note.id %>">Usuń</button>
-                                    </div>
-                                    <div class="note-bottom">
-                                        <%= note.content %>
-                                    </div>
-                                </div>
-    
-    
-                                <% }) %>
-                        </div>
+                                    <% }) %>
+                            </div>
 
-                        
 
-                                <% } else { %>
-                                    <p>Nie ma notatek!</p>
-                                    <% } %>
+
+                            <% } else { %>
+                                <p>Nie ma notatek!</p>
+                                <% } %>
                 </div>
             </section>
         </div>

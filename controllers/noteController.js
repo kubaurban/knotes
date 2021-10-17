@@ -8,6 +8,7 @@ const PATH_SUFFIX = '.txt'
 const previewLength = 300;
 
 const note_get = (req, res) => {
+    console.log('note_get', req.body.query);
     if (req.session.user === undefined) {
         res.render('user/login', { title: 'Log in', loged_in: false, message: 'Log in before you access the notes' });
     } else {
@@ -27,7 +28,7 @@ const note_get = (req, res) => {
                     if (mongo_note !== null) {
 
                         let content = mongo_note.content;
-                        if(content.length > previewLength) content = content.substring(0, previewLength) + '...';
+                        if (content.length > previewLength) content = content.substring(0, previewLength) + '...';
 
                         almost_notes.push({
                             "id": mongo_note.id,
@@ -167,6 +168,55 @@ const note_update = (req, res) => {
     })
 };
 
-module.exports = {
-    note_get, note_details, note_create_get, note_create_post, note_delete, note_update
+const note_search = (req, res) => {
+    console.log('note_search', req.body.query)
+
+    Note.find({
+        '$or': [
+            {
+                'title': {
+                    '$regex': req.body.query
+                }
+            },
+            {
+                'content': {
+                    '$regex': req.body.query
+                }
+            }
+        ]
+    }, function (error, result) {
+        if (error) {
+            console.log(error);
+            res.redirect('/500');
+        } else {
+            // console.log(result);
+
+            result.forEach(element => {
+                let content = element.content;
+                if (content.length > previewLength) element.content = content.substring(0, previewLength) + '...';
+            });
+
+            res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: result });
+
+
+            // const almost_notes = [];
+
+            // result.forEach(mongo_note => {
+            //     almost_notes.push({
+            //         "id": mongo_note.id,
+            //         "title": mongo_note.title,
+            //         "content": mongo_note.content
+            //     });
+            // });
+
+            // console.log(almost_notes)
+
+            // res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: almost_notes });
+        }
+    })
 };
+
+module.exports = {
+    note_get, note_details, note_create_get, note_create_post, note_delete, note_update, note_search
+};
+
