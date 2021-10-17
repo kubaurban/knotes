@@ -1,6 +1,5 @@
 body {
-    font-family: Helvetica, sans-serif;
-    font-family: Roboto, monospace;
+    font-family: 'Ubuntu', Helvetica, sans-serif;
     margin: 0px 0 0 0;
     color: var(--text);
     background-color: var(--background);
@@ -33,7 +32,7 @@ li {
 }
 
 input, textarea {
-    font-family: Roboto, monospace;
+    font-family: monospace;
     color: var(--text);
     background-color: var(--light_background);
     border: none;
@@ -44,7 +43,7 @@ input, textarea {
     padding: 6px 9px;
 }
 
-button {
+button:not(.note-del) {
     color: var(--text);
     background-color: var(--accent);
     font-size: 14px;
@@ -54,9 +53,9 @@ button {
     box-shadow: 0 3px var(--light_background);
 }
 
-button:hover { background-color: var(--dark_accent); }
+button:hover:not(.note-del) { background-color: var(--dark_accent); }
 
-button:active {
+button:active:not(.note-del) {
     box-shadow: 0 0 var(--background);
     transform: translateY(3px);
 }
@@ -82,16 +81,16 @@ button a { color: var(--text); }
     margin: 40px 0;
 }
 
-#navy_wrap { background-color: var(--dark_background); }
+/* #navy_wrap { background-color: var(--dark_background); } */
 
-#content_wrap { background-color: var(--background); }
+/* #content_wrap { background-color: var(--background); } */
 
 #footer_wrap {
     /* position: absolute;
     bottom: 0; */
 	font-size: 0.8em;
 	color: var(--light_text);
-	background-color: var(--dark_background);
+	/* background-color: var(--dark_background); */
 }
 
 #unavailable { color: var(--light_text); }

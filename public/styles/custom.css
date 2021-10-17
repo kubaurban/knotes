@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+
 .note-link {
     display: flex;
     align-items: center;
@@ -5,13 +8,27 @@
 }
 
 .note-li {
-    border: 1px solid #FFFFFF;
+    border: 2px solid #ffffff73;
     margin: 10px;
     padding: 10px 20px;
+    border-radius: 8px;
 }
 
 .note-img {
     width: 64px;
+}
+
+.note-del {
+    background: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: 30px;
+}
+
+.note-del img {
+    display: block;
+    height: 100%;
 }
 
 .note-top {
@@ -22,9 +39,10 @@
 .note-bottom {
     text-align: justify;
     margin-top: 5px;
-    border-top: 2px solid #666;
+    border-top: 2px solid #636363ad;
     padding-top: 5px;
     word-break: break-word;
+    font-family: monospace;
 }
 
 #content {
@@ -38,11 +56,26 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background: linear-gradient(0deg, black, hsl(205deg 100% 20%));
+
+}
+
+#navy_wrap {
+    /* background: linear-gradient(180deg, black 0%, transparent 100%); */
+    background-color: rgb(0 0 0 / 59%);
+}
+
+nav a {
+    border-radius: 10px;
 }
 
 #content_wrap {
     flex-grow: 1;
     padding-bottom: 30px;
+}
+
+#footer_wrap {
+    background-color: transparent;
 }
 
 #note-container {
@@ -66,4 +99,22 @@ body {
         flex-direction: column;
         align-items: center;
     }
+}
+
+#search {
+    margin-bottom: 15px;
+}
+
+#search::placeholder {
+    color: #fff;
+}
+
+
+
+#welcome {
+    font-size: 5em;
+}
+
+h1 {
+    font-size: 2.5em;
 }

@@ -15,9 +15,9 @@ const note_get = (req, res) => {
         var reads = req.session.readperm.split(':');
         console.log(reads);
         if (reads.length === 0) {
-            res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: [] });
+            res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: [], search: false });
         } else if (reads.length > 0 && reads[0] === '') {
-            res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: [] });
+            res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: [], search: false });
         } else {
             if (reads[reads.length - 1] === '')
                 reads.pop();
@@ -41,7 +41,7 @@ const note_get = (req, res) => {
                 }
                 resolve(almost_notes)
             }).then(val => {
-                res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: val });
+                res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: val, search: false });
             });
         }
     }
@@ -85,7 +85,7 @@ const note_create_post = (req, res) => {
 
             if (note) {
                 res.render('notes/create', {
-                    title: 'aaaaaa',
+                    title: 'Stwórz notatkę',
                     loged_in: true,
                     exists: true
                 });
@@ -175,12 +175,14 @@ const note_search = (req, res) => {
         '$or': [
             {
                 'title': {
-                    '$regex': req.body.query
+                    '$regex': req.body.query,
+                    '$options': "$i"
                 }
             },
             {
                 'content': {
-                    '$regex': req.body.query
+                    '$regex': req.body.query,
+                    '$options': "$i"
                 }
             }
         ]
@@ -189,29 +191,20 @@ const note_search = (req, res) => {
             console.log(error);
             res.redirect('/500');
         } else {
-            // console.log(result);
+            console.log('before filter', result);
+
+            result = result.filter(element => req.session.readperm.indexOf(element.id) !== -1);
+
+            console.log('after filter', result);
 
             result.forEach(element => {
                 let content = element.content;
                 if (content.length > previewLength) element.content = content.substring(0, previewLength) + '...';
             });
 
-            res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: result });
-
-
-            // const almost_notes = [];
-
-            // result.forEach(mongo_note => {
-            //     almost_notes.push({
-            //         "id": mongo_note.id,
-            //         "title": mongo_note.title,
-            //         "content": mongo_note.content
-            //     });
-            // });
-
-            // console.log(almost_notes)
-
-            // res.render('notes/index', { title: 'Wszystkie notatki', loged_in: true, notes: almost_notes });
+            res.render('notes/index', {
+                title: 'Wszystkie notatki', loged_in: true, notes: result, search: true
+            });
         }
     })
 };

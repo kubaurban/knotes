@@ -37,7 +37,7 @@
             <section class="inner">
                 <h1>Notatki</h1>
                 <form action="/notes/search" method="POST">
-                    <input type="search" name="query" id="search">
+                    <input type="search" name="query" id="search" placeholder="Szukaj...">
                 </form>
                 <div id="note-container">
 
@@ -58,7 +58,7 @@
                                                 <img src="/static/resources/new.svg" class="note-img">
                                                 <%= note.title %>
                                             </a>
-                                            <button class="note-del" data-note-id="<%= note.id %>">Usuń</button>
+                                            <button class="note-del" data-note-id="<%= note.id %>"><img src="/static/resources/trash-can.png" alt=""></button>
                                         </div>
                                         <div class="note-bottom">
                                             <%= note.content %>
@@ -78,7 +78,7 @@
                                                 <img src="/static/resources/new.svg" class="note-img">
                                                 <%= note.title %>
                                             </a>
-                                            <button class="note-del" data-note-id="<%= note.id %>">Usuń</button>
+                                            <button class="note-del" data-note-id="<%= note.id %>"><img src="/static/resources/trash-can.png" alt=""></button>
                                         </div>
                                         <div class="note-bottom">
                                             <%= note.content %>
@@ -91,9 +91,11 @@
 
 
 
-                            <% } else { %>
+                            <% } else { if(!search) { %>
                                 <p>Nie ma notatek!</p>
-                                <% } %>
+                                <% } else { %>
+                                    <p>Nie znaleziono notatek zawierających podaną frazę!</p>
+                                    <% }} %>
                 </div>
             </section>
         </div>
