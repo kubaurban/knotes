@@ -13,7 +13,6 @@ router.post('/search', noteController.note_search);
 router.get('/:filename', noteController.note_details);
 router.delete('/:filename', noteController.note_delete);
 router.post('/:filename', noteController.note_update);
-// router.get('/', )
 
 
 module.exports = router;
